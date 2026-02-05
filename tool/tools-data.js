@@ -7,7 +7,8 @@ const tools = [
         categoryName: '测试',
         items: [
             { name: 'Word模板填充器（测试）', desc: '通用文档模板填充工具，上传配置和模板，自动生成表单并导出，具体使用方法请仔细阅读文档！', url: 'app/word-template-filler/index.html' },
-            { name: '通用锁班助手（测试）', desc: 'Python脚本，自动化填写飞行门户非生产任务录入表单，支持批量录入锁班信息', url: 'app/lock-entry-helper/index.html' }
+            { name: '通用锁班助手（测试）', desc: 'Python脚本，自动化填写飞行门户非生产任务录入表单，支持批量录入锁班信息', url: 'app/lock-entry-helper/index.html' },
+            { name: '飞行经历起落数按天统计（测试）', desc: 'Python脚本，自动化查询飞行门户飞行经历起落数并按天统计', url: 'app/flight-stats-helper/index.html' }
         ]
     },
     {
