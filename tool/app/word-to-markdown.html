@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word转Markdown</title>
+    <link rel="stylesheet" href="../../libs/bootstrap.min.css">
+    <style>
+        body { background: transparent; padding: 20px; }
+        .container { max-width: 900px; }
+        .upload-area { border: 2px dashed #dee2e6; border-radius: 8px; padding: 40px; text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 15px; }
+        .upload-area:hover, .upload-area.dragover { border-color: #0d6efd; background: #f8f9fa; }
+        .upload-area input { display: none; }
+        .status-bar { padding: 10px 15px; border-radius: 4px; margin: 10px 0; font-size: 13px; }
+        .status-bar.success { background: #d1e7dd; color: #0f5132; }
+        .status-bar.error { background: #f8d7da; color: #842029; }
+        .status-bar.info { background: #e7f1ff; color: #084298; }
+        .hidden { display: none !important; }
+        .output-box { max-height: 500px; overflow: auto; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; padding: 12px; font-family: monospace; font-size: 12px; white-space: pre-wrap; word-break: break-all; }
+        .tab-content { margin-top: 12px; }
+        .preview-html { padding: 16px; background: #fff; border: 1px solid #dee2e6; border-radius: 4px; max-height: 500px; overflow: auto; font-size: 14px; line-height: 1.8; }
+        .preview-html table { border-collapse: collapse; margin: 10px 0; }
+        .preview-html th, .preview-html td { border: 1px solid #dee2e6; padding: 6px 10px; }
+        .preview-html th { background: #f8f9fa; }
+        .preview-html img { max-width: 100%; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card mb-3">
+        <div class="card-body text-center position-relative py-2">
+            <a href="../../index.html" class="position-absolute start-0 top-50 translate-middle-y ms-3 text-decoration-none">返回</a>
+            <h5 class="card-title mb-0">Word 转 Markdown</h5>
+            <small class="text-muted">将 Word 文档转为 Markdown，方便提供给 AI 阅读</small>
+        </div>
+    </div>
+
+    <div class="upload-area" id="uploadArea">
+        <input type="file" id="fileInput" accept=".docx">
+        <p class="mb-1">点击或拖拽 Word 文件到此处</p>
+        <small class="text-muted">支持 .docx 格式</small>
+    </div>
+
+    <div id="statusBar" class="status-bar info hidden"></div>
+
+    <div id="resultSection" class="hidden">
+        <div class="d-flex gap-2 mb-3">
+            <button class="btn btn-primary btn-sm" id="downloadBtn">下载 .md 文件</button>
+            <button class="btn btn-outline-secondary btn-sm" id="copyBtn">复制 Markdown</button>
+            <div class="ms-auto">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="includeImages" checked>
+                    <label class="form-check-label small" for="includeImages">包含图片(base64)</label>
+                </div>
+            </div>
+        </div>
+
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabMarkdown">Markdown 源码</a></li>
+            <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" data-bs-target="#tabPreview">渲染预览</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="tabMarkdown">
+                <div id="markdownOutput" class="output-box"></div>
+            </div>
+            <div class="tab-pane fade" id="tabPreview">
+                <div id="htmlPreview" class="preview-html"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <h6 class="card-title">使用说明</h6>
+            <ul class="text-muted small mb-0">
+                <li>上传 .docx 文件后自动转换为 Markdown</li>
+                <li>保留标题、加粗、斜体、列表、表格、超链接</li>
+                <li>图片默认转为 base64 内嵌，取消勾选可去除图片</li>
+                <li>页眉页脚、批注、修订等不会被转换</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="../../libs/bootstrap.bundle.min.js"></script>
+<script src="../../libs/mammoth.min.js"></script>
+<script src="word-to-markdown.js"></script>
+</body>
+</html>

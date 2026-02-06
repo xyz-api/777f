@@ -44,7 +44,9 @@ const tools = [
             { name: '酒店账单核对', desc: '对比酒店账单与入住登记表，核对用', url: 'app/hotel-bill-check.html' },
             { name: '账单甘特图', desc: '将酒店账单转换为甘特图，与飞行任务日程对比审核', url: 'app/bill-gantt.html' },
             { name: 'PDF工具箱', desc: 'PDF预览、页面提取、转图片、合并、图片转PDF，支持旋转和批量操作', url: 'app/pdf-tool.html' },
-            { name: '图片工具箱', desc: '图片格式转换、压缩、调整尺寸、裁剪、Base64互转，支持批量操作', url: 'app/image-tool.html' }
+            { name: '图片工具箱', desc: '图片格式转换、压缩、调整尺寸、裁剪、Base64互转，支持批量操作', url: 'app/image-tool.html' },
+            { name: 'Excel转Markdown', desc: '将Excel解析为结构化Markdown，方便提供给AI阅读，保留超链接和日期格式', url: 'app/excel-to-markdown.html' },
+            { name: 'Word转Markdown', desc: '将Word文档转为Markdown，保留标题、列表、表格、超链接，支持预览和下载', url: 'app/word-to-markdown.html' }
         ]
     },
     {
