@@ -42,7 +42,8 @@ const tools = [
         categoryName: '综合',
         items: [
             { name: '酒店账单核对', desc: '对比酒店账单与入住登记表，核对用', url: 'app/hotel-bill-check.html' },
-            { name: '账单甘特图', desc: '将酒店账单转换为甘特图，与飞行任务日程对比审核', url: 'app/bill-gantt.html' }
+            { name: '账单甘特图', desc: '将酒店账单转换为甘特图，与飞行任务日程对比审核', url: 'app/bill-gantt.html' },
+            { name: 'PDF工具箱', desc: 'PDF预览、页面提取、转图片、合并、图片转PDF，支持旋转和批量操作', url: 'app/pdf-tool.html' }
         ]
     },
     {

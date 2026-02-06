@@ -6,6 +6,8 @@ let routes = [];              // 航线列表
 let selectedSheets = [];      // 选中的工作表
 
 // 页面加载时自动加载默认花名册
+document.addEventListener('DOMContentLoaded', loadDefaultRoster);
+
 async function loadDefaultRoster() {
     try {
         showStatus('rosterStatus', '正在加载默认花名册...', 'loading');
@@ -18,7 +20,6 @@ async function loadDefaultRoster() {
         showStatus('rosterStatus', '请选择机组花名册文件', 'hint');
     }
 }
-loadDefaultRoster();
 
 // 解析花名册数据
 function parseRosterData(data, fileName) {

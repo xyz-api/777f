@@ -3,6 +3,8 @@ let employeeData = [];
 let matchedResults = [];
 
 // 页面加载时自动加载默认花名册
+document.addEventListener('DOMContentLoaded', loadDefaultRoster);
+
 async function loadDefaultRoster() {
     try {
         showFileStatus('正在加载默认花名册...', 'loading');
@@ -15,7 +17,6 @@ async function loadDefaultRoster() {
         showFileStatus('请选择员工花名册文件', 'hint');
     }
 }
-loadDefaultRoster();
 
 // 解析Excel数据（复用逻辑）
 function parseExcelData(data, fileName) {
