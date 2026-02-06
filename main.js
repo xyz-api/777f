@@ -47,6 +47,22 @@ function enterApp() {
     
     welcome.style.display = 'none';
     main.classList.add('visible');
+    initBackground();
+}
+
+function initBackground() {
+    const app = document.getElementById('mainApp');
+    const video = document.getElementById('bgVideo');
+    
+    if (CONFIG.bgType === 'video') {
+        video.src = CONFIG.bgVideo;
+        video.style.display = 'block';
+        app.style.backgroundImage = 'none';
+    } else {
+        video.style.display = 'none';
+        video.src = '';
+        app.style.backgroundImage = `url('${CONFIG.bgImage}')`;
+    }
 }
 
 function loadModule(name, event) {
