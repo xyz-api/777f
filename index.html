@@ -8,16 +8,17 @@
     <link href="main.css" rel="stylesheet">
 </head>
 <body>
-    <!-- 欢迎页 -->
-    <div class="welcome-page" id="welcomePage">
-        <div class="welcome-card">
-            <input type="text" class="password-input" id="passwordInput" placeholder="请输入密码">
-            <button class="login-btn" onclick="tryLogin()">登录</button>
+    <!-- 免责声明弹窗 -->
+    <div class="disclaimer-overlay" id="disclaimerOverlay">
+        <div class="disclaimer-card">
+            <p>所有工具均在浏览器本地运行，不会上传、读取或以任何方式获取您的文件及敏感数据。除浏览器本地缓存外，不存在数据泄露风险。</p>
+            <p>应用均由AI进行开发，按"现状"提供服务，不作任何明示或暗示的保证。开发者不对因使用本应用而导致的任何直接、间接、偶然、特殊或后果性损失承担责任，包括但不限于数据丢失、业务中断等。</p>
+            <button class="disclaimer-btn" onclick="document.getElementById('disclaimerOverlay').style.display='none'">我已知悉</button>
         </div>
     </div>
 
     <!-- 主界面 -->
-    <div class="main-app" id="mainApp">
+    <div class="main-app visible" id="mainApp">
         <video class="bg-video" id="bgVideo" autoplay muted loop playsinline></video>
         <div id="tsparticles"></div>
         <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
