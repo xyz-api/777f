@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown对比器</title>
+    <link rel="stylesheet" href="../../libs/bootstrap.min.css">
+    <style>
+        body { background: transparent; padding: 20px; }
+        .container { max-width: 1200px; }
+        .upload-area { border: 2px dashed #dee2e6; border-radius: 8px; padding: 25px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .upload-area:hover, .upload-area.dragover { border-color: #0d6efd; background: #f8f9fa; }
+        .upload-area input { display: none; }
+        .upload-area.has-file { border-style: solid; border-color: #198754; background: #d1e7dd; padding: 12px; }
+        .hidden { display: none !important; }
+        .diff-wrap { font-family: monospace; font-size: 12px; line-height: 1.6; overflow: auto; border: 1px solid #dee2e6; border-radius: 4px; }
+        /* Side-by-side */
+        .side-by-side { display: flex; }
+        .side-by-side .diff-pane { flex: 1; min-width: 0; overflow-x: auto; }
+        .side-by-side .diff-pane:first-child { border-right: 2px solid #dee2e6; }
+        .diff-line { display: flex; white-space: pre-wrap; word-break: break-all; }
+        .diff-line .line-num { min-width: 40px; padding: 0 6px; text-align: right; color: #999; background: #f8f9fa; border-right: 1px solid #eee; user-select: none; flex-shrink: 0; }
+        .diff-line .line-content { padding: 0 8px; flex: 1; min-width: 0; }
+        .diff-line.added { background: #e6ffec; }
+        .diff-line.removed { background: #ffebe9; }
+        .diff-line.changed { background: #fff8c5; }
+        .diff-line.empty-placeholder { background: #f8f9fa; }
+        .char-add { background: #abf2bc; }
+        .char-del { background: #ff8182; }
+        /* Unified */
+        .unified .diff-line { display: flex; }
+        .unified .diff-line .line-num { min-width: 35px; }
+        .unified .diff-line .diff-marker { min-width: 20px; text-align: center; flex-shrink: 0; color: #666; user-select: none; }
+        /* Preview */
+        .preview-pane { flex: 1; padding: 16px; overflow: auto; max-height: 600px; font-family: sans-serif; font-size: 14px; line-height: 1.8; }
+        .preview-pane:first-child { border-right: 2px solid #dee2e6; }
+        .preview-pane table { border-collapse: collapse; margin: 10px 0; }
+        .preview-pane th, .preview-pane td { border: 1px solid #dee2e6; padding: 6px 10px; }
+        .preview-pane th { background: #f8f9fa; }
+        .preview-pane img { max-width: 100%; }
+        .preview-pane h1, .preview-pane h2 { border-bottom: 1px solid #eee; padding-bottom: 4px; }
+        .pane-label { font-size: 12px; font-weight: 600; padding: 6px 12px; background: #f8f9fa; border-bottom: 1px solid #dee2e6; }
+        .stats { font-size: 13px; }
+        .stats .added-count { color: #1a7f37; }
+        .stats .removed-count { color: #cf222e; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card mb-3">
+        <div class="card-body text-center position-relative py-2">
+            <a href="../../index.html" class="position-absolute start-0 top-50 translate-middle-y ms-3 text-decoration-none">返回</a>
+            <h5 class="card-title mb-0">Markdown 对比器</h5>
+            <small class="text-muted">手册工作使用，对比两个 Markdown 文件的差异</small>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-6">
+            <div class="upload-area" id="oldUpload">
+                <input type="file" id="oldInput" accept=".md,.markdown,.txt">
+                <p class="mb-1">上传旧版文件</p>
+                <small class="text-muted">.md / .txt</small>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="upload-area" id="newUpload">
+                <input type="file" id="newInput" accept=".md,.markdown,.txt">
+                <p class="mb-1">上传新版文件</p>
+                <small class="text-muted">.md / .txt</small>
+            </div>
+        </div>
+    </div>
+
+    <div id="resultSection" class="hidden">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabSide">并排对比</a></li>
+                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" data-bs-target="#tabUnified">内联对比</a></li>
+                <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" data-bs-target="#tabPreview">渲染预览</a></li>
+            </ul>
+            <div class="stats" id="diffStats"></div>
+        </div>
+
+        <div class="d-flex justify-content-end mb-2">
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="diffOnlyToggle">
+                <label class="form-check-label small" for="diffOnlyToggle">只看差异</label>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="tabSide">
+                <div class="diff-wrap side-by-side" id="sideBySide" style="max-height:600px"></div>
+            </div>
+            <div class="tab-pane fade" id="tabUnified">
+                <div class="diff-wrap unified" id="unifiedView" style="max-height:600px"></div>
+            </div>
+            <div class="tab-pane fade" id="tabPreview">
+                <div class="diff-wrap" style="max-height:600px">
+                    <div class="d-flex" style="height:100%">
+                        <div style="flex:1;display:flex;flex-direction:column">
+                            <div class="pane-label">旧版</div>
+                            <div class="preview-pane" id="previewOld"></div>
+                        </div>
+                        <div style="flex:1;display:flex;flex-direction:column">
+                            <div class="pane-label">新版</div>
+                            <div class="preview-pane" id="previewNew"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-3">
+        <div class="card-body">
+            <h6 class="card-title">使用说明</h6>
+            <ol class="text-muted small mb-2">
+                <li>在左侧上传修改前的 Markdown 文件，右侧上传修改后的文件</li>
+                <li>上传完成后自动对比，结果显示在下方</li>
+                <li>通过顶部标签页切换三种查看方式</li>
+            </ol>
+            <h6 class="card-title">三种查看方式</h6>
+            <ul class="text-muted small mb-2">
+                <li>并排对比 — 左边显示旧版，右边显示新版，同一行左右对齐。<span style="background:#ffebe9;padding:0 3px">红色背景</span>表示删除的内容，<span style="background:#e6ffec;padding:0 3px">绿色背景</span>表示新增的内容，<span style="background:#fff8c5;padding:0 3px">黄色背景</span>表示修改的行，具体改了哪几个字会额外高亮</li>
+                <li>内联对比 — 所有变化合并在一列中显示，删除行前面标 <code>-</code>，新增行前面标 <code>+</code>，方便快速浏览改了什么</li>
+                <li>渲染预览 — 把两个文件分别渲染成网页效果并排展示，可以直观看到标题、表格、图片等排版后的样子</li>
+            </ul>
+            <p class="text-muted small mb-0">所有操作在浏览器本地完成，文件不会上传到任何服务器。</p>
+        </div>
+    </div>
+</div>
+
+<script src="../../libs/bootstrap.bundle.min.js"></script>
+<script src="../../libs/marked.min.js"></script>
+<script src="md-diff.js"></script>
+</body>
+</html>

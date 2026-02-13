@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页</title>
+    <link href="libs/bootstrap.min.css" rel="stylesheet">
+    <link href="main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 免责声明弹窗 -->
+    <div class="disclaimer-overlay" id="disclaimerOverlay">
+        <div class="disclaimer-card">
+            <p>所有工具均在浏览器本地运行，不会上传、读取或以任何方式获取您的文件及敏感数据。除浏览器本地缓存外，不存在数据泄露风险。</p>
+            <p>应用均由AI进行开发，按"现状"提供服务，不作任何明示或暗示的保证。开发者不对因使用本应用而导致的任何直接、间接、偶然、特殊或后果性损失承担责任，包括但不限于数据丢失、业务中断等。</p>
+            <button class="disclaimer-btn" onclick="document.getElementById('disclaimerOverlay').style.display='none'">我已知悉</button>
+        </div>
+    </div>
+
+    <!-- 主界面 -->
+    <div class="main-app visible" id="mainApp">
+        <video class="bg-video" id="bgVideo" autoplay muted loop playsinline></video>
+        <div id="tsparticles"></div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" data-module="home" onclick="loadModule('home', event)">首页</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-module="tool" onclick="loadModule('tool', event)">工具</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-module="docs" onclick="loadModule('docs', event)">文档</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-module="links" onclick="loadModule('links', event)">友情链接</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="content-wrapper">
+            <iframe id="contentFrame" src="home/index.html"></iframe>
+        </div>
+    </div>
+
+    <script src="libs/bootstrap.bundle.min.js"></script>
+    <script src="libs/tsparticles.bundle.min.js"></script>
+    <script src="config.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

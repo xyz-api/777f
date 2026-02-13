@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel转Markdown</title>
+    <link rel="stylesheet" href="../../libs/bootstrap.min.css">
+    <style>
+        body { background: transparent; padding: 20px; }
+        .container { max-width: 900px; }
+        .upload-area { border: 2px dashed #dee2e6; border-radius: 8px; padding: 40px; text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 15px; }
+        .upload-area:hover, .upload-area.dragover { border-color: #0d6efd; background: #f8f9fa; }
+        .upload-area input { display: none; }
+        .status-bar { padding: 10px 15px; background: #e7f1ff; border-radius: 4px; margin: 10px 0; font-size: 13px; }
+        .status-bar.error { background: #f8d7da; color: #842029; }
+        .status-bar.success { background: #d1e7dd; color: #0f5132; }
+        .hidden { display: none !important; }
+        .sheet-summary { font-size: 13px; }
+        .sheet-summary td, .sheet-summary th { padding: 6px 10px; border: 1px solid #dee2e6; }
+        .sheet-summary th { background: #f8f9fa; }
+        .preview-box { max-height: 400px; overflow: auto; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px; padding: 12px; font-family: monospace; font-size: 12px; white-space: pre-wrap; word-break: break-all; }
+        .preview-box.excel-view { font-family: inherit; white-space: normal; word-break: normal; padding: 0; }
+        .preview-box.excel-view table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .preview-box.excel-view th, .preview-box.excel-view td { border: 1px solid #dee2e6; padding: 6px 10px; text-align: left; white-space: nowrap; }
+        .preview-box.excel-view th { background: #e9ecef; position: sticky; top: 0; z-index: 1; }
+        .preview-box.excel-view tr:nth-child(even) { background: #f8f9fa; }
+        .preview-box.excel-view tr:hover { background: #e2e6ea; }
+        .view-toggle .btn { font-size: 12px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card mb-3">
+        <div class="card-body text-center position-relative py-2">
+            <a href="../../index.html" class="position-absolute start-0 top-50 translate-middle-y ms-3 text-decoration-none">返回</a>
+            <h5 class="card-title mb-0">Excel 转 Markdown</h5>
+            <small class="text-muted">将 Excel 解析为结构化 Markdown，方便提供给 AI 阅读</small>
+        </div>
+    </div>
+
+    <div class="upload-area" id="uploadArea">
+        <input type="file" id="fileInput" accept=".xlsx,.xls">
+        <p class="mb-1">点击或拖拽 Excel 文件到此处</p>
+        <small class="text-muted">支持 .xlsx / .xls</small>
+    </div>
+
+    <div id="statusBar" class="status-bar hidden"></div>
+
+    <div id="resultSection" class="hidden">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h6 class="card-title">解析结果</h6>
+                <div id="sheetSummary"></div>
+                <div class="d-flex gap-2 mt-3">
+                    <button class="btn btn-primary btn-sm" id="downloadBtn">下载 ZIP</button>
+                    <button class="btn btn-outline-secondary btn-sm" id="previewBtn">预览全部</button>
+                </div>
+            </div>
+        </div>
+        <div id="previewSection" class="hidden">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="card-title mb-0">数据预览</h6>
+                        <div class="view-toggle btn-group">
+                            <button class="btn btn-outline-primary btn-sm active" id="viewExcelBtn">Excel 表格</button>
+                            <button class="btn btn-outline-primary btn-sm" id="viewMdBtn">Markdown 源码</button>
+                        </div>
+                    </div>
+                    <ul class="nav nav-tabs mb-2" id="previewTabs"></ul>
+                    <div id="previewBox" class="preview-box excel-view"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <h6 class="card-title">使用说明</h6>
+            <ul class="text-muted small mb-0">
+                <li>上传 Excel 后自动解析所有工作表</li>
+                <li>下载的 ZIP 包含一份数据概览和每个工作表的独立 Markdown 文件</li>
+                <li>超链接保留为 Markdown 链接格式，日期转为可读格式，公式输出计算结果</li>
+                <li>将 Markdown 文件发送给 AI 即可让其理解表格内容</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="../../libs/xlsx.full.min.js"></script>
+<script src="../../libs/jszip.min.js"></script>
+<script src="excel-to-markdown.js"></script>
+</body>
+</html>
+""

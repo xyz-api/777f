@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+        }
+        body {
+            background: transparent;
+            min-height: 100vh;
+            overflow-y: scroll;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 24px 20px;
+        }
+        .search-box {
+            max-width: 400px;
+            margin: 0 auto 20px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 10px 16px;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            background: #fff;
+        }
+        .search-box input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            padding: 5px 12px;
+            border: 1px solid #d0d7de;
+            border-radius: 4px;
+            background: #fff;
+            font-size: 14px;
+            color: #656d76;
+            cursor: pointer;
+        }
+        .tab-btn.active {
+            background: #2563eb;
+            border-color: #2563eb;
+            color: white;
+        }
+        mark {
+            background: #dbeafe;
+            color: #2563eb;
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+        .no-result {
+            text-align: center;
+            padding: 40px 20px;
+            color: #656d76;
+            font-size: 14px;
+        }
+        .tool-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+        }
+        .tool-item {
+            display: flex;
+            flex-direction: column;
+            padding: 14px;
+            background: #fff;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            text-decoration: none;
+            color: inherit;
+        }
+        .tool-name {
+            font-size: 14px;
+            color: #1f2328;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        .tool-desc {
+            font-size: 12px;
+            color: #656d76;
+            line-height: 1.4;
+        }
+        .tool-count {
+            text-align: center;
+            padding: 12px;
+            color: #656d76;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="搜索工具...">
+        </div>
+        <div class="category-tabs">
+            <button class="tab-btn active" data-category="all">全部</button>
+            <button class="tab-btn" data-category="test">测试</button>
+            <button class="tab-btn" data-category="training">训练</button>
+            <button class="tab-btn" data-category="operation">运行</button>
+            <button class="tab-btn" data-category="safety">安全</button>
+            <button class="tab-btn" data-category="tech">技术</button>
+            <button class="tab-btn" data-category="general">综合</button>
+            <button class="tab-btn" data-category="branch">分部</button>
+        </div>
+        <div id="toolSections"></div>
+    </div>
+    <script src="tools-data.js"></script>
+    <script src="tools-render.js"></script>
+</body>
+</html>
